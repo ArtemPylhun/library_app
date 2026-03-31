@@ -9,6 +9,23 @@ class BookRepository:
         self.db = db
 
     def get_all(self) -> list[Book]:
+        # 1. Перевіряємо тип об'єкта
+        print(f"DEBUG: self.db type: {type(self.db)}")
+        
+        # 2. Перевіряємо, чи є в неї взагалі bind
+        from sqlalchemy.orm import Session
+        is_session = isinstance(self.db, Session)
+        print(f"DEBUG: Is it a real SQLAlchemy Session? {is_session}")
+
+        # Спробуємо дістати двигун вручну з нашого модуля
+        from app.database import engine
+        print(f"DEBUG: Global engine id: {id(engine)}")
+        
+        # ТИМЧАСОВИЙ ФІКС: якщо сесія не прив'язана, прив'яжемо її силоміць прямо тут
+        if self.db.bind is None:
+            print("DEBUG: Session was unbound! Forcing bind...")
+            self.db.bind = engine
+
         stmt = select(Book).order_by(Book.id)
         return list(self.db.scalars(stmt).all())
 

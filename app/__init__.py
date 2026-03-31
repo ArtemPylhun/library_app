@@ -7,6 +7,9 @@ from app.routes.books import books_bp
 def create_app():
     app = Flask(__name__)
 
+    from app.models.author import Author
+    from app.models.book import Book
+
     # Реєстрація маршрутів (Blueprint)
     app.register_blueprint(books_bp, url_prefix="/api/books")
 
