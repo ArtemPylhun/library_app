@@ -1,0 +1,5 @@
+FROM postgres:16-alpine
+
+LABEL maintainer="my_project_dev"
+
+EXPOSE 5432

@@ -1,0 +1,22 @@
+services:
+  db:
+    # Вказуємо шлях до нашого Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    container_name: library_postgres
+    restart: always
+    # Змінні оточення для налаштування БД
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: library_db
+    # Прокидаємо порти: [Порт на твоєму ПК]:[Порт всередині контейнера]
+    ports:
+      - "5434:5432"
+    # Зберігаємо дані у спеціальному "томі", щоб вони не видалялися
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
